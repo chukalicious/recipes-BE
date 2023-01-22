@@ -15,4 +15,24 @@ router.get("/", (req, res) => {
     });
 });
 
+router.post("/", async (req, res) => {
+  let user = req.body;
+
+  try {
+    const registered = await Users.add(user);
+    console.log("registered: ", registered);
+    if (!registered.email && !registered.password) {
+      res.status(400).json({ message: "Request must include required fields" });
+    } else {
+      res.status(201).json(registered);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Could not create user",
+      detail: err.detail,
+      table: `In ${err.table} table`,
+    });
+  }
+});
 module.exports = router;
