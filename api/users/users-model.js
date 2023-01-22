@@ -6,11 +6,20 @@ module.exports = {
   get,
   //   getByID,
   //   findBy,
-  //   add,
+  add,
   //   remove,
   //   update,
 };
 
 function get() {
   return db("users");
+}
+
+function add(user) {
+  return db("users")
+    .insert(user)
+    .into("users")
+    .then((user) => {
+      return user;
+    });
 }
