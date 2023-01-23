@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
   try {
     const registered = await Users.add(user);
     console.log("registered: ", registered);
-    if (!registered.email && !registered.password) {
+    if (!registered.email || !registered.password) {
       res.status(400).json({ message: "Request must include required fields" });
     } else {
       res.status(201).json(registered);

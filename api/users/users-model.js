@@ -4,7 +4,7 @@ const db = knex(config.development);
 
 module.exports = {
   get,
-  //   getByID,
+  findByID,
   //   findBy,
   add,
   //   remove,
@@ -15,11 +15,18 @@ function get() {
   return db("users");
 }
 
-function add(user) {
-  return db("users")
-    .insert(user)
-    .into("users")
-    .then((user) => {
-      return user;
-    });
+function findByID(id) {
+  return db("users").where({ id }).first();
+}
+
+async function add(user) {
+  //   return db("users")
+  //     .insert(user)
+  //     .into("users")
+  //     .then((user) => {
+  //       return user;
+  //     });
+
+  const [id] = await db("users").insert(user, "id");
+  return findByID(id);
 }
