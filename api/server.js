@@ -6,6 +6,7 @@ const session = require("express-session");
 const server = express();
 
 const UsersRouter = require("./users/users-router");
+const AuthRouter = require("./auth/auth-router");
 
 // const sessionConfiguration = {
 //   name: "sessionToken",
@@ -25,5 +26,6 @@ server.use(cors());
 // server.use(session(sessionConfiguration));
 
 server.use("/users", UsersRouter);
+server.use("/signup", AuthRouter);
 
 module.exports = server;

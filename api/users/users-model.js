@@ -7,8 +7,8 @@ module.exports = {
   findByID,
   //   findBy,
   add,
-  //   remove,
-  //   update,
+  remove,
+  update,
 };
 
 function get() {
@@ -20,13 +20,14 @@ function findByID(id) {
 }
 
 async function add(user) {
-  //   return db("users")
-  //     .insert(user)
-  //     .into("users")
-  //     .then((user) => {
-  //       return user;
-  //     });
-
   const [id] = await db("users").insert(user, "id");
   return findByID(id);
+}
+
+function remove(id) {
+  return db("users").where({ id }).del();
+}
+
+function update(id, changes) {
+  return db("users").where({ id }).update(changes, "*");
 }

@@ -35,4 +35,37 @@ router.post("/", async (req, res) => {
     });
   }
 });
+
+router.delete("/:id", (req, res) => {
+  Users.remove(req.params.id)
+    .then((count) => {
+      if (count > 0) {
+        res.status(200).json({ message: `The user has been deleted` });
+      } else {
+        res.status(404).json({ message: `The user could not be found` });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: `Server error` });
+    });
+});
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  Users.update(id, changes)
+    .then((user) => {
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ message: `The user could not be found` });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: `Server Error` });
+    });
+});
+
 module.exports = router;
