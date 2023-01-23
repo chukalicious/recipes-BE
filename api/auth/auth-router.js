@@ -4,6 +4,7 @@ const jwt = require("json-web-token");
 const Users = require("../users/users-model");
 const router = express.Router();
 
+// Register
 router.post("/", async (req, res) => {
   let user = req.body;
 
@@ -28,5 +29,7 @@ router.post("/", async (req, res) => {
     });
   }
 });
+
+// Login
 
 module.exports = router;
