@@ -5,10 +5,10 @@ const db = knex(config.development);
 module.exports = {
   get,
   findByID,
-  //   findBy,
   add,
   remove,
   update,
+  findBy,
 };
 
 function get() {
@@ -30,4 +30,8 @@ function remove(id) {
 
 function update(id, changes) {
   return db("users").where({ id }).update(changes, "*");
+}
+
+function findBy(filter) {
+  return db("users").where(filter);
 }
