@@ -3,7 +3,7 @@ const config = require("../../knexfile.js");
 const db = knex(config.development);
 
 module.exports = {
-  get,
+  getAll,
   findByID,
   add,
   remove,
@@ -11,7 +11,7 @@ module.exports = {
   findBy,
 };
 
-function get() {
+function getAll() {
   return db("users");
 }
 
