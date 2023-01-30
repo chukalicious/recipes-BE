@@ -30,7 +30,7 @@ server.use(cors());
 server.use("/users", UsersRouter);
 server.use("/signup", AuthRouter);
 server.use("/login", AuthRouter);
-server.use("/recipes", IngredientsRouter);
+server.use("/ingredients", IngredientsRouter);
 server.use("/recipes", RecipesRouter);
 
 module.exports = server;

@@ -13,6 +13,22 @@ router.get("/ingredients", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  Ingredients.findByID(id)
+    .then((ingr) => {
+      if (ingr) {
+        res.status(201).json(ingr);
+      } else {
+        res.status(400).json({ message: `Could not find the ingredient` });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({ message: `Server error` });
+    });
+});
+
 router.post("/:id/ingredients", async (req, res) => {
   const ingredient = req.body;
 
@@ -34,7 +50,5 @@ router.post("/:id/ingredients", async (req, res) => {
     }
   }
 });
-
-// router.put("/:id/ingredient/:id")
 
 module.exports = router;

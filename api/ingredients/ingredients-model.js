@@ -2,13 +2,13 @@ const knex = require("knex");
 const config = require("../../knexfile.js");
 const db = knex(config.development);
 
-module.exports = { getAll, insert, findById, findByRecipeID, update };
+module.exports = { getAll, insert, findByID, findByRecipeID, update };
 
 function getAll() {
   return db("ingredients");
 }
 
-function findById(id) {
+function findByID(id) {
   return db("ingredients").where({ id }).first();
 }
 
