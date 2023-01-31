@@ -14,13 +14,14 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  const { id } = req.params;
+  let { id } = req.params;
+
   Recipes.findByID(id)
     .then((rec) => {
-      if (!rec) {
-        res.status(401).json({ message: `you must enter a recipe` });
+      if (rec) {
+        res.status(200).json(rec);
       } else {
-        res.status(201).json(rec);
+        res.status(401).json({ message: `Cannot find that recipe` });
       }
     })
     .catch((err) => {
@@ -29,13 +30,31 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   let recipe = req.body;
   try {
-    if (!recipe) {
+    if (!recipe.recipe_name) {
       res.status(401).json({ message: `You must enter a recipe` });
     } else {
-      res.status(201).json(recipe);
+      const newRecipe = await Recipes.insert(recipe);
+      res.status(201).json(newRecipe);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: `Server Error` });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const change = req.body;
+
+  try {
+    if (!change.recipe_name) {
+      res.status(401).json({ message: `you must enter a recipe name` });
+    } else {
+      const updated = await Recipes.update(id, change);
+      res.status(201).json(updated);
     }
   } catch (err) {
     console.log(err);
