@@ -32,11 +32,24 @@ exports.up = function (knex) {
         .inTable("recipes")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
+    })
+    .createTable("steps", (tbl) => {
+      tbl.increments("id");
+      tbl.string("step", 256).notNullable();
+      tbl
+        .integer("recipe_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("recipes")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
     });
 };
 
 exports.down = function (knex) {
   return knex.schema
+    .dropTableIfExists("steps")
     .dropTableIfExists("ingredients")
     .dropTableIfExists("recipes")
     .dropTableIfExists("users");
