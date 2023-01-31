@@ -29,7 +29,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.post("/:id/ingredients", async (req, res) => {
+router.post("/", async (req, res) => {
   const ingredient = req.body;
 
   const newIngredient = await Ingredients.insert(ingredient);
