@@ -9,7 +9,7 @@ exports.up = function (knex) {
     })
     .createTable("recipes", (tbl) => {
       tbl.increments("id");
-      tbl.string("recipe_name");
+      tbl.string("recipe_name").notNullable();
       tbl
         .integer("created_by")
         .unsigned()
