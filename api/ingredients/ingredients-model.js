@@ -2,13 +2,13 @@ const knex = require("knex");
 const config = require("../../knexfile.js");
 const db = knex(config.development);
 
-module.exports = { getAll, insert, findById, findByRecipeID, update };
+module.exports = { getAll, insert, findByID, findByRecipeID, update, remove };
 
 function getAll() {
-  return db("ingredients");
+  return db("ingredients").orderBy("id");
 }
 
-function findById(id) {
+function findByID(id) {
   return db("ingredients").where({ id }).first();
 }
 
@@ -26,4 +26,9 @@ async function update(id, ingredient) {
     .where({ id })
     .update(ingredient, "*");
   return findByRecipeID(updated.recipe_id);
+}
+
+async function remove(id) {
+  const [deleted] = await db("ingredients").where({ id }).del("*");
+  return deleted;
 }

@@ -1,8 +1,9 @@
+const { json } = require("express");
 const express = require("express");
 const Ingredients = require("./ingredients-model");
 const router = express.Router();
 
-router.get("/ingredients", (req, res) => {
+router.get("/", (req, res) => {
   Ingredients.getAll()
     .then((ingrd) => {
       res.status(201).json(ingrd);
@@ -10,6 +11,22 @@ router.get("/ingredients", (req, res) => {
     .catch((err) => {
       console.log(err);
       res.status(500).json({ message: `Server Error` });
+    });
+});
+
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  Ingredients.findByID(id)
+    .then((ingr) => {
+      if (ingr) {
+        res.status(201).json(ingr);
+      } else {
+        res.status(400).json({ message: `Could not find the ingredient` });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({ message: `Server error` });
     });
 });
 
@@ -35,6 +52,40 @@ router.post("/:id/ingredients", async (req, res) => {
   }
 });
 
-// router.put("/:id/ingredient/:id")
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const change = req.body;
+  Ingredients.update(id, change)
+    .then((ingre) => {
+      res.status(201).json(ingre);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: `Server error` });
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  Ingredients.remove(id)
+    .then((deleted) => {
+      Ingredients.findByRecipeID(deleted.recipe_id)
+        .then((ingred) => {
+          res.status(200).json(deleted);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(401).json({ message: `could not find ingredient` });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ message: `Server Error` });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: `Server Error` });
+    });
+});
 
 module.exports = router;
