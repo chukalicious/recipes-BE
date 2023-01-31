@@ -62,4 +62,17 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  let { id } = req.params;
+  Recipes.remove(id)
+    .then((deleted) => {
+      if (deleted) {
+        res.status(201).json({ message: `recipe chucked!`, deleted });
+      } else {
+        res.status(401).json({ message: `Could not findthe recipe` });
+      }
+    })
+    .catch((err) => res.status(500).json({ message: err.message }));
+});
+
 module.exports = router;
