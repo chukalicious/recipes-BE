@@ -1,4 +1,3 @@
-const { json } = require("express");
 const express = require("express");
 const Ingredients = require("./ingredients-model");
 const router = express.Router();
