@@ -9,6 +9,7 @@ const UsersRouter = require("./users/users-router");
 const AuthRouter = require("./auth/auth-router");
 const IngredientsRouter = require("./ingredients/ingredients-router");
 const RecipesRouter = require("./recipes/recipes-router");
+const StepsRouter = require("./steps/steps-router");
 
 // const sessionConfiguration = {
 //   name: "sessionToken",
@@ -32,5 +33,6 @@ server.use("/signup", AuthRouter);
 server.use("/login", AuthRouter);
 server.use("/ingredients", IngredientsRouter);
 server.use("/recipes", RecipesRouter);
+server.use("/steps", StepsRouter);
 
 module.exports = server;
