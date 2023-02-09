@@ -4,6 +4,7 @@ const jwt = require("json-web-token");
 const Users = require("../users/users-model");
 const router = express.Router();
 const secret = process.env.SECRET;
+const iat = Math.floor(Date.now() / 1000);
 
 // Login /////////
 router.post("/", async (req, res) => {
@@ -45,7 +46,7 @@ const generateToken = (user) => {
   const payload = {
     subject: user.id,
     name: user.name,
-    iat: 1516239022,
+    iat: iat,
   };
   const options = {
     expiresIn: "1d",
