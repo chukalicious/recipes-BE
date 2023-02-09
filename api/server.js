@@ -21,7 +21,7 @@ const sessionConfiguration = {
     httpOnly: true,
   },
   resave: false,
-  saveUnititialized: false,
+  saveUnititialized: true,
 };
 
 server.use(express.json());

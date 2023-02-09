@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("json-web-token");
 const Users = require("../users/users-model");
 const router = express.Router();
+const secret = process.env.SECRET;
 
 // Login /////////
 router.post("/", async (req, res) => {
@@ -18,7 +19,11 @@ router.post("/", async (req, res) => {
     }
     if (bcrypt.compareSync(password.toString(), user.password)) {
       req.session.user = user;
-      res.json({ message: `You are now logged in, ${email}` });
+      console.log("session: user: ", user);
+      const token = generateToken(user);
+      res
+        .status(201)
+        .json({ message: `You are now logged in, ${email}`, token });
     } else {
       res.status(401).json({ message: "Invalid Credentials" });
     }
@@ -36,14 +41,27 @@ router.get("/logout", (req, res) => {
 });
 
 // The below fn is for use with JWT
-// const generateToken = (user) => {
-//   const payload = {
-//     subject: user.id,
-//     email: user.email,
-//   };
-//   const options = {
-//     expiresIn: "1d",
-//   };
-// };
+const generateToken = (user) => {
+  const payload = {
+    subject: user.id,
+    name: user.name,
+    iat: 1516239022,
+  };
+  const options = {
+    expiresIn: "1d",
+  };
+  return jwt.encode(
+    secret,
+    payload,
+    function (err, token) {
+      if (err) {
+        console.error(err.name, err.message);
+      } else {
+        return token;
+      }
+    },
+    options
+  );
+};
 
 module.exports = router;
