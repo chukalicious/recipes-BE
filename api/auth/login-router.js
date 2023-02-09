@@ -7,34 +7,6 @@ const router = express.Router();
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(10);
 
-// Register
-router.post("/", async (req, res) => {
-  let user = req.body;
-
-  const hash = bcrypt.hashSync(user.password, salt);
-  console.log("hash: ", hash);
-
-  user.password = hash;
-  console.log("hash: ", hash);
-
-  try {
-    const registered = await Users.add(user);
-    console.log("registered: ", registered);
-    if (!registered.email || !registered.password) {
-      res.status(400).json({ message: "Request must include required fields" });
-    } else {
-      res.status(201).json(registered);
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      message: "Could not create user",
-      detail: err.detail,
-      table: `In ${err.table} table`,
-    });
-  }
-});
-
 // Login /////////
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
@@ -77,4 +49,5 @@ router.post("/", async (req, res) => {
 //     expiresIn: "1d",
 //   };
 // };
+
 module.exports = router;
