@@ -4,9 +4,6 @@ const jwt = require("json-web-token");
 const Users = require("../users/users-model");
 const router = express.Router();
 
-const saltRounds = 10;
-const salt = bcrypt.genSaltSync(10);
-
 // Login /////////
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
@@ -19,7 +16,6 @@ router.post("/", async (req, res) => {
       res.status(401).json({ status: 401, message: "Invalid Credentials" });
       return;
     }
-    console.log("password: ", typeof password.toString());
     if (bcrypt.compareSync(password.toString(), user.password)) {
       req.session.user = user;
       res.json({ message: `You are now logged in, ${email}` });
@@ -32,12 +28,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-// // Logout
+// Logout
 
-// router.get("/logout", (req, res) => {
-//   req.session.destroy();
-//   res.json({ message: "you are now logged out" });
-// });
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.json({ message: "you are now logged out" });
+});
 
 // The below fn is for use with JWT
 // const generateToken = (user) => {
