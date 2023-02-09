@@ -5,6 +5,7 @@ exports.up = function (knex) {
       tbl.string("email").notNullable().unique();
       tbl.string("username").unique();
       tbl.string("password", 256).notNullable();
+      tbl.string("retypePassword", 256);
       tbl.text("avatar");
     })
     .createTable("recipes", (tbl) => {

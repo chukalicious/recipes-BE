@@ -12,7 +12,7 @@ module.exports = {
 };
 
 function getAll() {
-  return db("users");
+  return db("users").orderBy("id");
 }
 
 function findByID(id) {
